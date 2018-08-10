@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    #stage {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        transform-style: preserve-3d;
+        perspective: 400px;
+        background: url('./assets/bg.jpg');
+        background-size: cover;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        transform-style: preserve-3d;
+        transform: rotateY(10deg);
+        position: absolute;
+        left: 50%;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        overflow: hidden;
+    }
+
+    li {
+        position: absolute;
+        left: 0;
+        top: 0;
+        list-style: none;
+        height: 100%;
+        background-position: center center;
+        /* backface-visibility: hidden; */
+    }
+</style>
+
+<body>
+    <div id="stage"></div>
+</body>
+<script>
+    const li_W = 128;
+    const ul = document.createElement('ul');
+    let total = 20;
+    const Y = (li_W / 2) / Math.tan(180 / 20 * Math.PI / 180);
+    ul.style = `transform-origin :center center ${-Y}px`;
+    while (total > 0) {
+        let li = document.createElement('li');
+        li.style = `
+            width:${li_W}px;
+            background-image:url('./assets/p${total}.png');
+            transform-origin:center center ${Y}px;
+            transform: rotateY(${-18 * total}deg);
+        `;
+        ul.appendChild(li)
+        total--;
+    }
+    document.querySelector('#stage').appendChild(ul);
+
+</script>
+
+</html>
