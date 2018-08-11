@@ -8,29 +8,27 @@
     <title>Document</title>
 </head>
 <style>
+    body {
+        background: url('./assets/bg.jpg');
+        background-size: cover;
+        touch-action: none;
+    }
+
     #stage {
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
         transform-style: preserve-3d;
         perspective: 400px;
-        background: url('./assets/bg.jpg');
+        perspective-origin: 50% 50%;
         background-size: cover;
     }
 
     ul {
-        margin: 0;
-        padding: 0;
         transform-style: preserve-3d;
+        padding: 0;
+        margin: 0 auto;
         transform: rotateY(10deg);
-        position: absolute;
-        left: 50%;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        overflow: hidden;
+        width: 129px;
+        /* height: 50px;
+        background: orange; */
     }
 
     li {
@@ -39,8 +37,7 @@
         top: 0;
         list-style: none;
         height: 100%;
-        background-position: center center;
-        /* backface-visibility: hidden; */
+        height: 1170px;
     }
 </style>
 
@@ -48,24 +45,37 @@
     <div id="stage"></div>
 </body>
 <script>
-    const li_W = 128;
+    const li_W = 129;
     const ul = document.createElement('ul');
     let total = 20;
     const Y = (li_W / 2) / Math.tan(180 / 20 * Math.PI / 180);
-    ul.style = `transform-origin :center center ${-Y}px`;
+    // ul.style = `transform-origin :center center ${-Y}px; width:${li_W}px`;
     while (total > 0) {
         let li = document.createElement('li');
         li.style = `
             width:${li_W}px;
             background-image:url('./assets/p${total}.png');
-            transform-origin:center center ${Y}px;
-            transform: rotateY(${-18 * total}deg);
+            transform: rotateY(${-18 * total}deg) translateZ(${-Y +3}px);
         `;
+        li.innerHTML = total;
         ul.appendChild(li)
         total--;
     }
     document.querySelector('#stage').appendChild(ul);
 
+    // event start
+    let startX = 0
+    let rotateY = 0
+    document.addEventListener('touchstart', ({changedTouches}) => {
+        if(startX = 0) startX = changedTouches[0].pageX;
+    })
+    document.addEventListener('touchmove',({changedTouches})=>{
+        rotateY = changedTouches[0].pageX - startX
+        ul.style.transform = `rotateY(${-rotateY}deg)`
+    })
+    document.addEventListener('touchend', ()=>{
+        startX = rotateY
+    })
 </script>
 
 </html>
